@@ -1,0 +1,15 @@
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\bin\Debug\ComputersInDomainInfo.exe.config
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\bin\Debug\ComputersInDomainInfo.exe
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\bin\Debug\ComputersInDomainInfo.pdb
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.csprojAssemblyReference.cache
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\MainWindow.g.cs
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\App.g.cs
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo_MarkupCompile.cache
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo_MarkupCompile.lref
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\MainWindow.baml
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.g.resources
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.Properties.Resources.resources
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.csproj.GenerateResource.cache
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.csproj.CoreCompileInputs.cache
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.exe
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.pdb
