@@ -12,19 +12,26 @@ namespace ComputersInDomainInfo
     {
         string username;
         string password;
-        string authority;
+        public string authority;
         string query;
-        string machineIP;
+        public string machineIP;
         ConnectionOptions options = new ConnectionOptions();
         ManagementScope scope = null;
+        PowerShellHandler psh = new PowerShellHandler();
+
+        public WMIAccess(string Username, string Password)
+        {
+            username = Username;
+            password = Password;
+        }
 
         public void configureConnections()
         {
             options.Impersonation = System.Management.ImpersonationLevel.Impersonate;
-            options.Username = "Administrator";
-            options.Password = "777Dasad777";
-            options.Authority = "ntlmdomain:edu.pl";
-            scope = new ManagementScope("\\\\192.168.0.3\\root\\cimv2", options);
+            options.Username = username;
+            options.Password = password;
+            options.Authority = "ntlmdomain:" + authority;
+            scope = new ManagementScope("\\\\" + machineIP + "\\root\\cimv2", options);
         }
 
         public void OpenConnection()
@@ -33,15 +40,15 @@ namespace ComputersInDomainInfo
         }
 
 
-        public void GetValue()
+        public void GetValue(string query)
         {
-            ObjectQuery query = new ObjectQuery("SELECT lastbootuptime FROM Win32_OperatingSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+            ObjectQuery Oquery = new ObjectQuery(query);
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, Oquery);
 
             ManagementObjectCollection queryCollection = searcher.Get();
             foreach (ManagementObject m in queryCollection)
             {
-                MessageBox.Show(m["lastbootuptime"].ToString());
+                MessageBox.Show(m["Caption"].ToString());
             }
         }
     }

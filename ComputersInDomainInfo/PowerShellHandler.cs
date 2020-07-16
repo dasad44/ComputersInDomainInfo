@@ -11,12 +11,12 @@ namespace ComputersInDomainInfo
 {
     class PowerShellHandler
     {
-        FileDialog fd = new FileDialog();
         string command;
 
-        public void createCommand()
+        public string getMachineIp(string machineName)
         {
-            command = "(Get-ADComputer '" + fd.machineNameList + "' -Properties IPv4Address).IPv4Address";
+            command = "(Get-ADComputer '" + machineName + "' -Properties IPv4Address).IPv4Address";
+            return command;
         }
 
         public void executeCommand()
@@ -40,6 +40,6 @@ namespace ComputersInDomainInfo
                 }
             }
         }
-            
+
     }
 }

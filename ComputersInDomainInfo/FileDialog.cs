@@ -11,7 +11,7 @@ namespace ComputersInDomainInfo
 {
     class FileDialog
     {
-        List<string> serverList = new List<string>();
+        public List<string> serverList = new List<string>();
         public List<string> machineNameList = new List<string>();
         public List<string> domainList = new List<string>();
 

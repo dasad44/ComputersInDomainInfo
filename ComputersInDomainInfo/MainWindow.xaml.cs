@@ -22,6 +22,15 @@ namespace ComputersInDomainInfo
 {
     public partial class MainWindow : Window
     {
+        FileDialog filedialog = new FileDialog();
+        PowerShellHandler powershell = new PowerShellHandler();
+        static string serverNameQuery = "Select * FROM Win32_ComputerSystem";
+        static string procesorTypeQuery = "Select * FROM Win32_Processor";
+        static string amountOfRamQuery = "SELECT Capacity FROM Win32_PhysicalMemory";
+        static string discCapacityQuery = "SELECT Size FROM Win32_LogicalDisk";
+        static string lastRebootQuery = "SELECT lastbootuptime FROM Win32_OperatingSystem";
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -29,14 +38,21 @@ namespace ComputersInDomainInfo
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            WMIAccess wmi = new WMIAccess();
-            wmi.configureConnections();
-            wmi.OpenConnection();
-            wmi.GetValue();
+            WMIAccess wmi = new WMIAccess(username.Text, password.Text);
 
+            for(int i = 0; i < filedialog.serverList.Count;i++)
+            {
+                wmi.authority = filedialog.domainList[i];
+                wmi.machineIP = powershell.getMachineIp(filedialog.machineNameList[i]);
+                wmi.configureConnections();
+                wmi.OpenConnection();
+                wmi.GetValue(serverNameQuery);
+                wmi.GetValue(procesorTypeQuery);
+                wmi.GetValue(amountOfRamQuery);
+                wmi.GetValue(discCapacityQuery);
+                wmi.GetValue(lastRebootQuery);
+            }
 
-            PowerShellHandler psh = new PowerShellHandler();
-            psh.createCommand();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
