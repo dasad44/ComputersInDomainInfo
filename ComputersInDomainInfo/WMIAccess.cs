@@ -10,26 +10,38 @@ namespace ComputersInDomainInfo
 {
     class WMIAccess
     {
-        public void GetValue()
+        string username;
+        string password;
+        string authority;
+        string query;
+        string machineIP;
+        ConnectionOptions options = new ConnectionOptions();
+        ManagementScope scope = null;
+
+        public void configureConnections()
         {
-            ManagementScope scope = null;
-            ConnectionOptions options = new ConnectionOptions();
             options.Impersonation = System.Management.ImpersonationLevel.Impersonate;
             options.Username = "Administrator";
             options.Password = "777Dasad777";
             options.Authority = "ntlmdomain:edu.pl";
-
-
             scope = new ManagementScope("\\\\192.168.0.3\\root\\cimv2", options);
-            scope.Connect();
+        }
 
-            ObjectQuery query = new ObjectQuery("Select TotalPhysicalMemory FROM Win32_PhysicalMemory");
+        public void OpenConnection()
+        {
+            scope.Connect();
+        }
+
+
+        public void GetValue()
+        {
+            ObjectQuery query = new ObjectQuery("SELECT lastbootuptime FROM Win32_OperatingSystem");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
 
             ManagementObjectCollection queryCollection = searcher.Get();
             foreach (ManagementObject m in queryCollection)
             {
-                MessageBox.Show(m["TotalPhysicalMemory"].ToString());
+                MessageBox.Show(m["lastbootuptime"].ToString());
             }
         }
     }

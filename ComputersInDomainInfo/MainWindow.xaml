@@ -10,8 +10,9 @@
         <Button Content="Update" HorizontalAlignment="Left" Margin="350,97,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="332,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="332,276,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBlock HorizontalAlignment="Left" Margin="332,178,0,0" TextWrapping="Wrap" Text="UserName" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="332,178,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="332,255,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top"/>
+        <Button Content="Get File" HorizontalAlignment="Left" Margin="61,51,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
 
     </Grid>
 </Window>

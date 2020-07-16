@@ -13,3 +13,7 @@ C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\De
 C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.csproj.CoreCompileInputs.cache
 C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.exe
 C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.pdb
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\bin\Debug\System.Management.Automation.dll
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\bin\Debug\Microsoft.Management.Infrastructure.dll
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\bin\Debug\System.Management.Automation.xml
+C:\Users\a794611\source\repos\ComputersInDomainInfo\ComputersInDomainInfo\obj\Debug\ComputersInDomainInfo.csproj.CopyComplete

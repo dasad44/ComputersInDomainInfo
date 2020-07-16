@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,10 +29,21 @@ namespace ComputersInDomainInfo
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //FileHandler fh = new FileHandler("servers.txt");
-            //fh.GetTextValue();
-            WMIAccess wmia = new WMIAccess();
-            wmia.GetValue();
+            WMIAccess wmi = new WMIAccess();
+            wmi.configureConnections();
+            wmi.OpenConnection();
+            wmi.GetValue();
+
+
+            PowerShellHandler psh = new PowerShellHandler();
+            psh.createCommand();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            FileDialog opendialog = new FileDialog();
+            opendialog.GetTextFromPath();
+            opendialog.splitServerList();
         }
     }
 }
