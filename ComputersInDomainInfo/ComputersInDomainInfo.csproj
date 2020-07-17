@@ -62,6 +62,7 @@
     </ApplicationDefinition>
     <Compile Include="FileDialog.cs" />
     <Compile Include="PowerShellHandler.cs" />
+    <Compile Include="ServerElements.cs" />
     <Compile Include="WMIAccess.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -16,7 +16,6 @@ namespace ComputersInDomainInfo
         public string machineIP;
         ConnectionOptions options = new ConnectionOptions();
         ManagementScope scope = null;
-        PowerShellHandler psh = new PowerShellHandler();
 
         public WMIAccess(string Username, string Password)
         {
@@ -45,7 +44,7 @@ namespace ComputersInDomainInfo
         }
 
 
-        public void GetValue(string query)
+        public string GetValue(string query)
         {
             ObjectQuery Oquery = new ObjectQuery(query);
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, Oquery);
@@ -54,13 +53,14 @@ namespace ComputersInDomainInfo
             {
                 try
                 {
-                    MessageBox.Show(m[getWMIObject(query)].ToString());
+                    return m[getWMIObject(query)].ToString();
                 }
                 catch(Exception e)
                 {
                     MessageBox.Show("WMI Problem: " + e.Message);
                 }
             }
+            return null;
         }
     }
 }

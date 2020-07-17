@@ -27,8 +27,10 @@ namespace ComputersInDomainInfo
         static string serverNameQuery = "Select Caption FROM Win32_ComputerSystem";
         static string procesorTypeQuery = "Select Caption FROM Win32_Processor";
         static string amountOfRamQuery = "SELECT Capacity FROM Win32_PhysicalMemory";
-        static string discCapacityQuery = "SELECT Size FROM Win32_LogicalDisk";
+        static string diskCapacityQuery = "SELECT Size FROM Win32_LogicalDisk";
+        static string diskFreeSpaceQuery = "SELECT FreeSpace FROM Win32_LogicalDisk";
         static string lastRebootQuery = "SELECT lastbootuptime FROM Win32_OperatingSystem";
+        string server, serverName, processorType, RAM, diskCapacity, freeDiskSpace, lastReboot;
 
 
         public MainWindow()
@@ -40,25 +42,50 @@ namespace ComputersInDomainInfo
         {
             WMIAccess wmi = new WMIAccess(username.Text, password.Password);
 
-            for(int i = 0; i < filedialog.serverList.Count;i++)
+            for (int i = 0; i < filedialog.serverList.Count; i++)
             {
                 wmi.authority = filedialog.domainList[i];
                 wmi.machineIP = powershell.executeCommand(powershell.getMachineIp(filedialog.machineNameList[i]));
                 wmi.configureConnections();
                 wmi.OpenConnection();
-                wmi.GetValue(serverNameQuery);
-                wmi.GetValue(procesorTypeQuery);
-                wmi.GetValue(amountOfRamQuery);
-                wmi.GetValue(discCapacityQuery);
-                wmi.GetValue(lastRebootQuery);
+                server = filedialog.serverList[i];
+                serverName = wmi.GetValue(serverNameQuery);
+                processorType = wmi.GetValue(procesorTypeQuery);
+                RAM = wmi.GetValue(amountOfRamQuery);
+                RAM = kbToMBConvert(RAM);
+                diskCapacity = wmi.GetValue(diskCapacityQuery);
+                diskCapacity = kbToGBConvert(diskCapacity);
+                freeDiskSpace = wmi.GetValue(diskFreeSpaceQuery);
+                freeDiskSpace = kbToGBConvert(freeDiskSpace);
+                lastReboot = wmi.GetValue(lastRebootQuery);
+                listview.Items.Add(new ServerElements { Server = server, ServerName = serverName, Processor = processorType, RAM = RAM + "MB", DiskSpace = diskCapacity + "GB", FreeDiskSpace = freeDiskSpace + "GB", LastReboot = lastReboot });
             }
+        }
 
+        static string getRebootDate(string unConvertedDate)
+        {
+            string day, month, year, hour, minute, second, convertedDate="";
+            return convertedDate;
+        }
+
+        static string kbToGBConvert(string number)
+        {
+            long _temp = Int64.Parse(number);
+            _temp = _temp / (1024 * 1024 * 1024);
+            return _temp.ToString();
+        }
+        static string kbToMBConvert(string number)
+        {
+            long _temp = Int64.Parse(number);
+            _temp = _temp / (1024 * 1024);
+            return _temp.ToString();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             filedialog.GetTextFromPath();
             filedialog.splitServerList();
+            filename.Text = filedialog.fileName;
         }
     }
 }

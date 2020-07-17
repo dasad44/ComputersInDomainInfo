@@ -14,6 +14,7 @@ namespace ComputersInDomainInfo
         public List<string> serverList = new List<string>();
         public List<string> machineNameList = new List<string>();
         public List<string> domainList = new List<string>();
+        public string fileName = string.Empty;
 
         public void splitServerList()
         {
@@ -44,6 +45,8 @@ namespace ComputersInDomainInfo
                     filePath = openFileDialog.FileName;
 
                     var fileStream = openFileDialog.OpenFile();
+                    fileName = Path.GetFileName(filePath);
+
                     try
                     {
                         using (StreamReader sr = new StreamReader(fileStream))
