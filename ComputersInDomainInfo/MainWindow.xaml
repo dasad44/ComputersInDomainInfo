@@ -7,12 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Update" HorizontalAlignment="Left" Margin="350,97,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <TextBox x:Name="username" HorizontalAlignment="Left" Height="23" Margin="332,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="password" HorizontalAlignment="Left" Height="23" Margin="332,276,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBlock HorizontalAlignment="Left" Margin="332,178,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="332,255,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top"/>
-        <Button Content="Get File" HorizontalAlignment="Left" Margin="61,51,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Button Content="Update" HorizontalAlignment="Left" Margin="35,106,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBox x:Name="username" HorizontalAlignment="Left" Height="23" Margin="20,178,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <PasswordBox x:Name="password" HorizontalAlignment="Left" PasswordChar="*" Height="23" Margin="20,240,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,157,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="24,219,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top"/>
+        <Button Content="Get File" HorizontalAlignment="Left" Margin="35,27,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="155" Margin="181,0,0,0"/>
 
     </Grid>
 </Window>

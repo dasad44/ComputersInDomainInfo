@@ -24,8 +24,8 @@ namespace ComputersInDomainInfo
     {
         FileDialog filedialog = new FileDialog();
         PowerShellHandler powershell = new PowerShellHandler();
-        static string serverNameQuery = "Select * FROM Win32_ComputerSystem";
-        static string procesorTypeQuery = "Select * FROM Win32_Processor";
+        static string serverNameQuery = "Select Caption FROM Win32_ComputerSystem";
+        static string procesorTypeQuery = "Select Caption FROM Win32_Processor";
         static string amountOfRamQuery = "SELECT Capacity FROM Win32_PhysicalMemory";
         static string discCapacityQuery = "SELECT Size FROM Win32_LogicalDisk";
         static string lastRebootQuery = "SELECT lastbootuptime FROM Win32_OperatingSystem";
@@ -38,12 +38,12 @@ namespace ComputersInDomainInfo
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            WMIAccess wmi = new WMIAccess(username.Text, password.Text);
+            WMIAccess wmi = new WMIAccess(username.Text, password.Password);
 
             for(int i = 0; i < filedialog.serverList.Count;i++)
             {
                 wmi.authority = filedialog.domainList[i];
-                wmi.machineIP = powershell.getMachineIp(filedialog.machineNameList[i]);
+                wmi.machineIP = powershell.executeCommand(powershell.getMachineIp(filedialog.machineNameList[i]));
                 wmi.configureConnections();
                 wmi.OpenConnection();
                 wmi.GetValue(serverNameQuery);
@@ -57,9 +57,8 @@ namespace ComputersInDomainInfo
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            FileDialog opendialog = new FileDialog();
-            opendialog.GetTextFromPath();
-            opendialog.splitServerList();
+            filedialog.GetTextFromPath();
+            filedialog.splitServerList();
         }
     }
 }

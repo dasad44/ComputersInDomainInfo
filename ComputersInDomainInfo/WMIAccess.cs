@@ -13,7 +13,6 @@ namespace ComputersInDomainInfo
         string username;
         string password;
         public string authority;
-        string query;
         public string machineIP;
         ConnectionOptions options = new ConnectionOptions();
         ManagementScope scope = null;
@@ -39,16 +38,28 @@ namespace ComputersInDomainInfo
             scope.Connect();
         }
 
+        private string getWMIObject(string query)
+        {
+            var objectToShow = query.Split(' ');
+            return objectToShow[1];
+        }
+
 
         public void GetValue(string query)
         {
             ObjectQuery Oquery = new ObjectQuery(query);
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, Oquery);
-
             ManagementObjectCollection queryCollection = searcher.Get();
             foreach (ManagementObject m in queryCollection)
             {
-                MessageBox.Show(m["Caption"].ToString());
+                try
+                {
+                    MessageBox.Show(m[getWMIObject(query)].ToString());
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("WMI Problem: " + e.Message);
+                }
             }
         }
     }

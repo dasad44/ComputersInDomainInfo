@@ -19,7 +19,7 @@ namespace ComputersInDomainInfo
             return command;
         }
 
-        public void executeCommand()
+        public string executeCommand(string command)
         {
             using (PowerShell PowerShellInstance = PowerShell.Create())
             {
@@ -35,10 +35,11 @@ namespace ComputersInDomainInfo
                 {
                     if (outputItem != null)
                     {
-                        MessageBox.Show(outputItem.ToString());
+                        return outputItem.ToString();
                     }
                 }
             }
+            return null;
         }
 
     }
