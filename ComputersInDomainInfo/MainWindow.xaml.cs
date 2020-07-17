@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace ComputersInDomainInfo
 {
@@ -31,7 +33,7 @@ namespace ComputersInDomainInfo
         static string diskFreeSpaceQuery = "SELECT FreeSpace FROM Win32_LogicalDisk";
         static string lastRebootQuery = "SELECT lastbootuptime FROM Win32_OperatingSystem";
         string server, serverName, processorType, RAM, diskCapacity, freeDiskSpace, lastReboot;
-
+        int serversCount = 0;
 
         public MainWindow()
         {
@@ -40,31 +42,46 @@ namespace ComputersInDomainInfo
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            WMIAccess wmi = new WMIAccess(username.Text, password.Password);
-
-            for (int i = 0; i < filedialog.serverList.Count; i++)
+            try
             {
-                wmi.authority = filedialog.domainList[i];
-                wmi.machineIP = powershell.executeCommand(powershell.getMachineIp(filedialog.machineNameList[i]));
-                wmi.configureConnections();
-                wmi.OpenConnection();
-                server = filedialog.serverList[i];
-                serverName = wmi.GetValue(serverNameQuery);
-                processorType = wmi.GetValue(procesorTypeQuery);
-                RAM = wmi.GetValue(amountOfRamQuery);
-                RAM = kbToMBConvert(RAM);
-                diskCapacity = wmi.GetValue(diskCapacityQuery);
-                diskCapacity = kbToGBConvert(diskCapacity);
-                freeDiskSpace = wmi.GetValue(diskFreeSpaceQuery);
-                freeDiskSpace = kbToGBConvert(freeDiskSpace);
-                lastReboot = wmi.GetValue(lastRebootQuery);
-                listview.Items.Add(new ServerElements { Server = server, ServerName = serverName, Processor = processorType, RAM = RAM + "MB", DiskSpace = diskCapacity + "GB", FreeDiskSpace = freeDiskSpace + "GB", LastReboot = lastReboot });
+                progressbar.Maximum = filedialog.serverList.Count;
+                WMIAccess wmi = new WMIAccess(username.Text, password.Password);
+                for (int i = 0; i < filedialog.serverList.Count; i++)
+                {
+                    progressbar.Value = i + 1;
+                    wmi.authority = filedialog.domainList[i];
+                    wmi.machineIP = powershell.executeCommand(powershell.getMachineIp(filedialog.machineNameList[i]));
+                    wmi.configureConnections();
+                    wmi.OpenConnection();
+                    server = filedialog.serverList[i];
+                    serverName = wmi.GetValue(serverNameQuery);
+                    processorType = wmi.GetValue(procesorTypeQuery);
+                    RAM = wmi.GetValue(amountOfRamQuery);
+                    RAM = kbToMBConvert(RAM);
+                    diskCapacity = wmi.GetValue(diskCapacityQuery);
+                    diskCapacity = kbToGBConvert(diskCapacity);
+                    freeDiskSpace = wmi.GetValue(diskFreeSpaceQuery);
+                    freeDiskSpace = kbToGBConvert(freeDiskSpace);
+                    lastReboot = wmi.GetValue(lastRebootQuery);
+                    lastReboot = getRebootDate(lastReboot);
+                    listview.Items.Add(new ServerElements { Server = server, ServerName = serverName, Processor = processorType, RAM = RAM + "MB", DiskSpace = diskCapacity + "GB", FreeDiskSpace = freeDiskSpace + "GB", LastReboot = lastReboot });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Problem with showing servers components: " + ex.Message);
             }
         }
-
         static string getRebootDate(string unConvertedDate)
         {
-            string day, month, year, hour, minute, second, convertedDate="";
+            string day, month, year, hour, minute, second, convertedDate;
+            year = unConvertedDate.Remove(4);
+            month = unConvertedDate[4].ToString() + unConvertedDate[5].ToString();
+            day = unConvertedDate[6].ToString() + unConvertedDate[7].ToString();
+            hour = unConvertedDate[8].ToString() + unConvertedDate[9].ToString();
+            minute = unConvertedDate[10].ToString() + unConvertedDate[11].ToString();
+            second = unConvertedDate[12].ToString() + unConvertedDate[13].ToString();
+            convertedDate = year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
             return convertedDate;
         }
 

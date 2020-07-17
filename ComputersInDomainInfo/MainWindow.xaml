@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ComputersInDomainInfo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="870">
+        Title="CIDI - Computers In Domain Info" Height="450" Width="915">
     <Grid>
         <Button Content="Update" HorizontalAlignment="Left" Margin="30,292,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Height="44"/>
         <TextBox x:Name="username" HorizontalAlignment="Left" Height="23" Margin="20,137,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
@@ -16,19 +16,20 @@
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="155"/>
         <TextBlock x:Name="filename" HorizontalAlignment="Left" Margin="30,68,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="23" Width="105"/>
         <TextBlock HorizontalAlignment="Left" Margin="9,68,0,0" TextWrapping="Wrap" Text="File:" VerticalAlignment="Top"/>
-        <ListView x:Name="listview" HorizontalAlignment="Left" Height="353" Margin="155,0,0,0" VerticalAlignment="Top" Width="707">
+        <ListView x:Name="listview" HorizontalAlignment="Left" Height="353" Margin="155,0,0,0" VerticalAlignment="Top" Width="752">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="100" Header="Server" DisplayMemberBinding="{Binding Server}"/>
                     <GridViewColumn Width="100" Header="Server Name" DisplayMemberBinding="{Binding ServerName}"/>
-                    <GridViewColumn Width="100" Header="Processor" DisplayMemberBinding="{Binding Processor}"/>
-                    <GridViewColumn Width="100" Header="RAM" DisplayMemberBinding="{Binding RAM}"/>
+                    <GridViewColumn Width="150" Header="Processor" DisplayMemberBinding="{Binding Processor}"/>
+                    <GridViewColumn Width="40" Header="RAM" DisplayMemberBinding="{Binding RAM}"/>
                     <GridViewColumn Width="100" Header="Disk Space" DisplayMemberBinding="{Binding DiskSpace}"/>
                     <GridViewColumn Width="100" Header="Free Disk Space" DisplayMemberBinding="{Binding FreeDiskSpace}"/>
-                    <GridViewColumn Width="100" Header="Last Reboot" DisplayMemberBinding="{Binding LastReboot}"/>
+                    <GridViewColumn Width="160" Header="Last Reboot" DisplayMemberBinding="{Binding LastReboot}"/>
                 </GridView>
             </ListView.View>
         </ListView>
+        <ProgressBar x:Name="progressbar" HorizontalAlignment="Left" Minimum="0" Height="51" Margin="160,358,0,0" VerticalAlignment="Top" Width="737"/>
 
     </Grid>
 </Window>
