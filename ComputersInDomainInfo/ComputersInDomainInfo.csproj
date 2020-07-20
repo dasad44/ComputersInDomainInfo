@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Export.cs" />
     <Compile Include="FileDialog.cs" />
     <Compile Include="PowerShellHandler.cs" />
     <Compile Include="ProgressBarHandler.cs" />

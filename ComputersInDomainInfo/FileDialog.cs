@@ -30,8 +30,6 @@ namespace ComputersInDomainInfo
 
         public List<string> GetTextFromPath()
         {
-
-            var fileContent = string.Empty;
             var filePath = string.Empty;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {

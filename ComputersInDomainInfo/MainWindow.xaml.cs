@@ -18,7 +18,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Globalization;
 using System.Threading;
+using System.Security.Cryptography.X509Certificates;
+using System.CodeDom;
+using System.Data;
 
 namespace ComputersInDomainInfo
 {
@@ -33,44 +37,85 @@ namespace ComputersInDomainInfo
         static string diskFreeSpaceQuery = "SELECT FreeSpace FROM Win32_LogicalDisk";
         static string lastRebootQuery = "SELECT lastbootuptime FROM Win32_OperatingSystem";
         string server, serverName, processorType, RAM, diskCapacity, freeDiskSpace, lastReboot;
-        int serversCount = 0;
+        Export export = new Export();
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                export.ToCSV();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Problem with exporting to CSV file " + ex.Message);
+            }
+            MessageBox.Show("CSV file created");
+        }
 
         public MainWindow()
         {
             InitializeComponent();
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                export.clearDataTable();
+            }
+            catch
+            {
+
+            }
+            
+            try
+            {
+                export.createDataTable();
                 progressbar.Maximum = filedialog.serverList.Count;
+                progressbar.Value = 0;
                 WMIAccess wmi = new WMIAccess(username.Text, password.Password);
                 for (int i = 0; i < filedialog.serverList.Count; i++)
                 {
-                    progressbar.Value = i + 1;
                     wmi.authority = filedialog.domainList[i];
                     wmi.machineIP = powershell.executeCommand(powershell.getMachineIp(filedialog.machineNameList[i]));
+                    server = filedialog.serverList[i];
                     wmi.configureConnections();
                     wmi.OpenConnection();
-                    server = filedialog.serverList[i];
                     serverName = wmi.GetValue(serverNameQuery);
                     processorType = wmi.GetValue(procesorTypeQuery);
                     RAM = wmi.GetValue(amountOfRamQuery);
-                    RAM = kbToMBConvert(RAM);
+                    RAM = kbToGBConvert(RAM);
                     diskCapacity = wmi.GetValue(diskCapacityQuery);
                     diskCapacity = kbToGBConvert(diskCapacity);
                     freeDiskSpace = wmi.GetValue(diskFreeSpaceQuery);
                     freeDiskSpace = kbToGBConvert(freeDiskSpace);
                     lastReboot = wmi.GetValue(lastRebootQuery);
-                    lastReboot = getRebootDate(lastReboot);
-                    listview.Items.Add(new ServerElements { Server = server, ServerName = serverName, Processor = processorType, RAM = RAM + "MB", DiskSpace = diskCapacity + "GB", FreeDiskSpace = freeDiskSpace + "GB", LastReboot = lastReboot });
+                    lastReboot = getRebootDate(lastReboot);      
+                    export.addToTable(server, serverName, processorType, RAM, diskCapacity, freeDiskSpace, lastReboot);
+                    listview.Items.Add(new ServerElements { Server = server, ServerName = serverName, Processor = processorType, RAM = RAM + "GB", DiskSpace = diskCapacity + "GB", FreeDiskSpace = freeDiskSpace + "GB", LastReboot = lastReboot });
+                    progressbar.Value = i + 1;
+                    percentblock.Text = getPercentStateValue(filedialog.serverList.Count, i + 1);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Problem with showing servers components: " + ex.Message);
+                MessageBox.Show("Problem with showing servers components: " + ex.Message + " Server Name: " + server);
+                percentblock.Text = "Failed";
             }
+        }
+            
+        string getPercentStateValue(double maximumPercentVal, double actualPercentVal)
+        {
+            maximumPercentVal = progressbar.Maximum;
+
+            actualPercentVal = progressbar.Value;
+            string actualPercent = "";
+            actualPercentVal = actualPercentVal / maximumPercentVal;
+            actualPercent = actualPercentVal.ToString("P", CultureInfo.InvariantCulture);
+            if(actualPercent == "100.00 %")
+            {
+                actualPercent = actualPercent + " Completed";
+            }
+            return actualPercent;
         }
         static string getRebootDate(string unConvertedDate)
         {
@@ -89,12 +134,6 @@ namespace ComputersInDomainInfo
         {
             long _temp = Int64.Parse(number);
             _temp = _temp / (1024 * 1024 * 1024);
-            return _temp.ToString();
-        }
-        static string kbToMBConvert(string number)
-        {
-            long _temp = Int64.Parse(number);
-            _temp = _temp / (1024 * 1024);
             return _temp.ToString();
         }
 

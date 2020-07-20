@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ComputersInDomainInfo"
         mc:Ignorable="d"
-        Title="CIDI - Computers In Domain Info" Height="450" Width="915">
+        Title="CIDI - Computers In Domain Informations" Height="450" Width="916">
     <Grid>
         <Button Content="Update" HorizontalAlignment="Left" Margin="30,292,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click" Height="44"/>
         <TextBox x:Name="username" HorizontalAlignment="Left" Height="23" Margin="20,137,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
@@ -13,8 +13,10 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,116,0,0" TextWrapping="Wrap" Text="Username:" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="24,165,0,0" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Top"/>
         <Button Content="Get File" HorizontalAlignment="Left" Margin="35,27,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="155"/>
-        <TextBlock x:Name="filename" HorizontalAlignment="Left" Margin="30,68,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="23" Width="105"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="155">
+            <Button Content="TO CSV" Margin="43,368,45,28" Click="Button_Click_2"/>
+        </Border>
+        <TextBlock x:Name="filename" HorizontalAlignment="Left" Margin="35,68,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="23" Width="105"/>
         <TextBlock HorizontalAlignment="Left" Margin="9,68,0,0" TextWrapping="Wrap" Text="File:" VerticalAlignment="Top"/>
         <ListView x:Name="listview" HorizontalAlignment="Left" Height="353" Margin="155,0,0,0" VerticalAlignment="Top" Width="752">
             <ListView.View>
@@ -22,14 +24,15 @@
                     <GridViewColumn Width="100" Header="Server" DisplayMemberBinding="{Binding Server}"/>
                     <GridViewColumn Width="100" Header="Server Name" DisplayMemberBinding="{Binding ServerName}"/>
                     <GridViewColumn Width="150" Header="Processor" DisplayMemberBinding="{Binding Processor}"/>
-                    <GridViewColumn Width="40" Header="RAM" DisplayMemberBinding="{Binding RAM}"/>
+                    <GridViewColumn Width="45" Header="RAM" DisplayMemberBinding="{Binding RAM}"/>
                     <GridViewColumn Width="100" Header="Disk Space" DisplayMemberBinding="{Binding DiskSpace}"/>
                     <GridViewColumn Width="100" Header="Free Disk Space" DisplayMemberBinding="{Binding FreeDiskSpace}"/>
-                    <GridViewColumn Width="160" Header="Last Reboot" DisplayMemberBinding="{Binding LastReboot}"/>
+                    <GridViewColumn Width="155" Header="Last Reboot" DisplayMemberBinding="{Binding LastReboot}"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <ProgressBar x:Name="progressbar" HorizontalAlignment="Left" Minimum="0" Height="51" Margin="160,358,0,0" VerticalAlignment="Top" Width="737"/>
+        <ProgressBar x:Name="progressbar" HorizontalAlignment="Left" Minimum="0" Height="30" Margin="160,358,0,0" VerticalAlignment="Top" Width="737"/>
+        <TextBlock x:Name="percentblock" HorizontalAlignment="Left" Margin="160,388,0,0" TextWrapping="Wrap" Text="0 %" VerticalAlignment="Top" Width="152"/>
 
     </Grid>
 </Window>

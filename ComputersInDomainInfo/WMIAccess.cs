@@ -30,6 +30,7 @@ namespace ComputersInDomainInfo
             options.Password = password;
             options.Authority = "ntlmdomain:" + authority;
             scope = new ManagementScope("\\\\" + machineIP + "\\root\\cimv2", options);
+            //MessageBox.Show(machineIP);
         }
 
         public void OpenConnection()
@@ -46,19 +47,20 @@ namespace ComputersInDomainInfo
 
         public string GetValue(string query)
         {
-            ObjectQuery Oquery = new ObjectQuery(query);
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, Oquery);
-            ManagementObjectCollection queryCollection = searcher.Get();
-            foreach (ManagementObject m in queryCollection)
+            try
             {
-                try
+                ObjectQuery Oquery = new ObjectQuery(query);
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, Oquery);
+                ManagementObjectCollection queryCollection = searcher.Get();
+                foreach (ManagementObject m in queryCollection)
                 {
                     return m[getWMIObject(query)].ToString();
+
                 }
-                catch(Exception e)
-                {
-                    MessageBox.Show("WMI Problem: " + e.Message);
-                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("WMI Problem: " + e.Message);
             }
             return null;
         }
