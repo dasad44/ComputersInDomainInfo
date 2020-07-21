@@ -21,6 +21,7 @@ namespace ComputersInDomainInfo
             components.Columns.Remove("Server Name");
             components.Columns.Remove("Processor");
             components.Columns.Remove("RAM");
+            components.Columns.Remove("Disk Name");
             components.Columns.Remove("Disk Space");
             components.Columns.Remove("Free Disk Space");
             components.Columns.Remove("Last Reboot");
@@ -31,15 +32,16 @@ namespace ComputersInDomainInfo
             components.Columns.Add("Server Name", typeof(string));
             components.Columns.Add("Processor", typeof(string));
             components.Columns.Add("RAM", typeof(string));
+            components.Columns.Add("Disk Name", typeof(string));
             components.Columns.Add("Disk Space", typeof(string));
             components.Columns.Add("Free Disk Space", typeof(string));
             components.Columns.Add("Last Reboot", typeof(string));
 
         }
 
-        public void addToTable(string server, string serverName, string processorType, string RAM, string diskCapacity, string freeDiskSpace, string lastReboot)
+        public void addToTable(string server, string serverName, string processorType, string RAM, string diskName, string diskCapacity, string freeDiskSpace, string lastReboot)
         {
-            components.Rows.Add(server, serverName, processorType, RAM, diskCapacity, freeDiskSpace, lastReboot);
+            components.Rows.Add(server, serverName, processorType, RAM, diskName, diskCapacity, freeDiskSpace, lastReboot);
         }
 
         public void ToCSV()

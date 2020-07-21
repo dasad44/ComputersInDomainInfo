@@ -54,6 +54,7 @@ namespace ComputersInDomainInfo
                 ManagementObjectCollection queryCollection = searcher.Get();
                 foreach (ManagementObject m in queryCollection)
                 {
+                    //MessageBox.Show(m[getWMIObject(query)].ToString());
                     return m[getWMIObject(query)].ToString();
 
                 }
@@ -63,6 +64,26 @@ namespace ComputersInDomainInfo
                 MessageBox.Show("WMI Problem: " + e.Message);
             }
             return null;
+        }
+
+        public List<string> GetValuesArray(string query)
+        {
+            List<string> elementList = new List<string>();
+            try
+            {
+                ObjectQuery Oquery = new ObjectQuery(query);
+                ManagementObjectSearcher obj = new ManagementObjectSearcher(scope, Oquery);
+                ManagementObjectCollection colDisks = obj.Get();
+                foreach (ManagementObject objDisk in colDisks)
+                {
+                    elementList.Add(objDisk[getWMIObject(query)].ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("WMI Problem: " + e.Message);
+            }
+            return elementList;
         }
     }
 }

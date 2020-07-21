@@ -15,6 +15,7 @@ namespace ComputersInDomainInfo
         public string DiskSpace { get; set; }
         public string FreeDiskSpace { get; set; }
         public string LastReboot { get; set; }
+        public string NameDisk { get; set; }
 
     }
 }

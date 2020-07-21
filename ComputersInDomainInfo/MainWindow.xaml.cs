@@ -23,6 +23,8 @@ using System.Threading;
 using System.Security.Cryptography.X509Certificates;
 using System.CodeDom;
 using System.Data;
+using System.Data.Odbc;
+using System.Security.Cryptography;
 
 namespace ComputersInDomainInfo
 {
@@ -33,11 +35,16 @@ namespace ComputersInDomainInfo
         static string serverNameQuery = "Select Caption FROM Win32_ComputerSystem";
         static string procesorTypeQuery = "Select Caption FROM Win32_Processor";
         static string amountOfRamQuery = "SELECT Capacity FROM Win32_PhysicalMemory";
-        static string diskCapacityQuery = "SELECT Size FROM Win32_LogicalDisk";
-        static string diskFreeSpaceQuery = "SELECT FreeSpace FROM Win32_LogicalDisk";
+        static string diskCapacityQuery = "SELECT Size FROM Win32_LogicalDisk WHERE DriveType = 3";
+        static string diskFreeSpaceQuery = "SELECT FreeSpace FROM Win32_LogicalDisk WHERE DriveType = 3";
         static string lastRebootQuery = "SELECT lastbootuptime FROM Win32_OperatingSystem";
+        static string diskIDQuery = "SELECT DeviceID FROM Win32_LogicalDisk WHERE DriveType = 3";
         string server, serverName, processorType, RAM, diskCapacity, freeDiskSpace, lastReboot;
         Export export = new Export();
+        int i = 0, j = 0;
+        List<string> diskNameList = new List<string>();
+        List<string> diskCapacityList = new List<string>();
+        List<string> freeDiskSpaceList = new List<string>();
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
@@ -45,7 +52,7 @@ namespace ComputersInDomainInfo
             {
                 export.ToCSV();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Problem with exporting to CSV file " + ex.Message);
             }
@@ -60,20 +67,21 @@ namespace ComputersInDomainInfo
         {
             try
             {
+
                 export.clearDataTable();
             }
-            catch
+            catch(Exception ex)
             {
-
+                //MessageBox.Show(ex.Message);
             }
-            
+
             try
             {
                 export.createDataTable();
                 progressbar.Maximum = filedialog.serverList.Count;
                 progressbar.Value = 0;
                 WMIAccess wmi = new WMIAccess(username.Text, password.Password);
-                for (int i = 0; i < filedialog.serverList.Count; i++)
+                for (i = 0; i < filedialog.serverList.Count; i++)
                 {
                     wmi.authority = filedialog.domainList[i];
                     wmi.machineIP = powershell.executeCommand(powershell.getMachineIp(filedialog.machineNameList[i]));
@@ -84,15 +92,25 @@ namespace ComputersInDomainInfo
                     processorType = wmi.GetValue(procesorTypeQuery);
                     RAM = wmi.GetValue(amountOfRamQuery);
                     RAM = kbToGBConvert(RAM);
-                    diskCapacity = wmi.GetValue(diskCapacityQuery);
-                    diskCapacity = kbToGBConvert(diskCapacity);
-                    freeDiskSpace = wmi.GetValue(diskFreeSpaceQuery);
-                    freeDiskSpace = kbToGBConvert(freeDiskSpace);
                     lastReboot = wmi.GetValue(lastRebootQuery);
-                    lastReboot = getRebootDate(lastReboot);      
-                    export.addToTable(server, serverName, processorType, RAM, diskCapacity, freeDiskSpace, lastReboot);
-                    listview.Items.Add(new ServerElements { Server = server, ServerName = serverName, Processor = processorType, RAM = RAM + "GB", DiskSpace = diskCapacity + "GB", FreeDiskSpace = freeDiskSpace + "GB", LastReboot = lastReboot });
+                    lastReboot = getRebootDate(lastReboot);
+
+
+                    diskNameList = wmi.GetValuesArray(diskIDQuery);
+                    diskCapacityList = wmi.GetValuesArray(diskCapacityQuery);
+                    freeDiskSpaceList = wmi.GetValuesArray(diskFreeSpaceQuery);
+                    for (j = 0; j < diskNameList.Count; j++)
+                    {
+                        diskCapacityList[j] = kbToGBConvert(diskCapacityList[j]);
+                        freeDiskSpaceList[j] = kbToGBConvert(freeDiskSpaceList[j]);
+
+                        export.addToTable(server, serverName, processorType, RAM, diskNameList[j], diskCapacityList[j], freeDiskSpaceList[j], lastReboot);
+                        listview.Items.Add(new ServerElements { Server = server, ServerName = serverName, Processor = processorType, RAM = RAM + "GB", NameDisk = diskNameList[j], DiskSpace = diskCapacityList[j] + "GB", FreeDiskSpace = freeDiskSpaceList[j] + "GB", LastReboot = lastReboot });
+
+                        //MessageBox.Show("d");
+                    }
                     progressbar.Value = i + 1;
+                    MessageBox.Show("");
                     percentblock.Text = getPercentStateValue(filedialog.serverList.Count, i + 1);
                 }
             }
@@ -102,7 +120,7 @@ namespace ComputersInDomainInfo
                 percentblock.Text = "Failed";
             }
         }
-            
+
         string getPercentStateValue(double maximumPercentVal, double actualPercentVal)
         {
             maximumPercentVal = progressbar.Maximum;
@@ -111,7 +129,7 @@ namespace ComputersInDomainInfo
             string actualPercent = "";
             actualPercentVal = actualPercentVal / maximumPercentVal;
             actualPercent = actualPercentVal.ToString("P", CultureInfo.InvariantCulture);
-            if(actualPercent == "100.00 %")
+            if (actualPercent == "100.00 %")
             {
                 actualPercent = actualPercent + " Completed";
             }
